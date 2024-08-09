@@ -19,12 +19,12 @@
 #endif
 
 #include "DFRobot_EC.h"
-#include <EEPROM.h>
+//#include <EEPROM.h>
 
-#define EEPROM_write(address, p) {int i = 0; byte *pp = (byte*)&(p);for(; i < sizeof(p); i++) EEPROM.write(address+i, pp[i]);}
-#define EEPROM_read(address, p)  {int i = 0; byte *pp = (byte*)&(p);for(; i < sizeof(p); i++) pp[i]=EEPROM.read(address+i);}
+//#define EEPROM_write(address, p) {int i = 0; byte *pp = (byte*)&(p);for(; i < sizeof(p); i++) EEPROM.write(address+i, pp[i]);}
+//#define EEPROM_read(address, p)  {int i = 0; byte *pp = (byte*)&(p);for(; i < sizeof(p); i++) pp[i]=EEPROM.read(address+i);}
 
-#define KVALUEADDR 0x0A    //the start address of the K value stored in the EEPROM
+//#define KVALUEADDR 0x0A    //the start address of the K value stored in the EEPROM
 #define RES2 820.0
 #define ECREF 200.0
 
@@ -56,16 +56,16 @@ DFRobot_EC::~DFRobot_EC()
 
 void DFRobot_EC::begin()
 {
-    EEPROM_read(KVALUEADDR, this->_kvalueLow);        //read the calibrated K value from EEPROM
-    if(EEPROM.read(KVALUEADDR)==0xFF && EEPROM.read(KVALUEADDR+1)==0xFF && EEPROM.read(KVALUEADDR+2)==0xFF && EEPROM.read(KVALUEADDR+3)==0xFF){
-        this->_kvalueLow = 1.0;                       // For new EEPROM, write default value( K = 1.0) to EEPROM
-        EEPROM_write(KVALUEADDR, this->_kvalueLow);
-    }
-    EEPROM_read(KVALUEADDR+4, this->_kvalueHigh);     //read the calibrated K value from EEPRM
-    if(EEPROM.read(KVALUEADDR+4)==0xFF && EEPROM.read(KVALUEADDR+5)==0xFF && EEPROM.read(KVALUEADDR+6)==0xFF && EEPROM.read(KVALUEADDR+7)==0xFF){
-        this->_kvalueHigh = 1.0;                      // For new EEPROM, write default value( K = 1.0) to EEPROM
-        EEPROM_write(KVALUEADDR+4, this->_kvalueHigh);
-    }
+    //EEPROM_read(KVALUEADDR, this->_kvalueLow);        //read the calibrated K value from EEPROM
+    //if(EEPROM.read(KVALUEADDR)==0xFF && EEPROM.read(KVALUEADDR+1)==0xFF && EEPROM.read(KVALUEADDR+2)==0xFF && EEPROM.read(KVALUEADDR+3)==0xFF){
+    this->_kvalueLow = 1.0;                       // For new EEPROM, write default value( K = 1.0) to EEPROM
+        //EEPROM_write(KVALUEADDR, this->_kvalueLow);
+    //}
+    //EEPROM_read(KVALUEADDR+4, this->_kvalueHigh);     //read the calibrated K value from EEPRM
+    //if(EEPROM.read(KVALUEADDR+4)==0xFF && EEPROM.read(KVALUEADDR+5)==0xFF && EEPROM.read(KVALUEADDR+6)==0xFF && EEPROM.read(KVALUEADDR+7)==0xFF){
+    this->_kvalueHigh = 1.0;                      // For new EEPROM, write default value( K = 1.0) to EEPROM
+        //EEPROM_write(KVALUEADDR+4, this->_kvalueHigh);
+    //}
     this->_kvalue =  this->_kvalueLow;                // set default K value: K = kvalueLow
 }
 
@@ -213,9 +213,9 @@ void DFRobot_EC::ecCalibration(byte mode)
                 Serial.println();
                 if(ecCalibrationFinish){   
                     if((this->_rawEC>0.9)&&(this->_rawEC<1.9)){
-                        EEPROM_write(KVALUEADDR, this->_kvalueLow);
+                        //EEPROM_write(KVALUEADDR, this->_kvalueLow);
                     }else if((this->_rawEC>9)&&(this->_rawEC<16.8)){
-                        EEPROM_write(KVALUEADDR+4, this->_kvalueHigh);
+                        //EEPROM_write(KVALUEADDR+4, this->_kvalueHigh);
                     }
                     Serial.print(F(">>>Calibration Successful"));
                 }else{
